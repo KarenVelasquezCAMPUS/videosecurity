@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
     // Cargar el encabezado
     const headerPlaceholder = document.getElementById('header-placeholder');
-    fetch('components/header.html')
+    fetch('../../componentes/header.html')
         .then(response => response.text())
         .then(data => {
             headerPlaceholder.innerHTML = data;
@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Cargar el pie de página
     const footerPlaceholder = document.getElementById('footer-placeholder');
-    fetch('components/footer.html')
+    fetch('../../componentes/footer.html')
         .then(response => response.text())
         .then(data => {
             footerPlaceholder.innerHTML = data;
@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Inicializar video en formato m3u8, evitando descarga del mismo
     const videoElement = document.getElementById('video');
-    const videoSrc = 'media/vonepreview.m3u8';
+    const videoSrc = 'media/comoinstalarmacroenword.m3u8';
     if (videoElement.canPlayType('application/vnd.apple.mpegmar')) {
         videoElement.src = videoSrc;
     } else if (Hls.isSupported()) {
@@ -61,7 +61,6 @@ document.addEventListener('contextmenu', (e) => {
     e.preventDefault();
     return false;
 });
-
 // Deshabilitar copiar y pegar
 document.addEventListener('copy', (e) => {
     e.preventDefault();
