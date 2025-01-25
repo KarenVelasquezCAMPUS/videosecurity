@@ -14,6 +14,11 @@ document.addEventListener('DOMContentLoaded', function () {
         .then(response => response.text())
         .then(data => {
             footerPlaceholder.innerHTML = data;
+            const footerScript = document.createElement('script');
+            footerScript.src = '../../componentes/footer.js';
+            footerScript.type = 'text/javascript';
+            footerScript.defer = true;  
+            document.body.appendChild(footerScript);
         })
         .catch(error => console.error('Error al cargar el pie de página:', error));
 
