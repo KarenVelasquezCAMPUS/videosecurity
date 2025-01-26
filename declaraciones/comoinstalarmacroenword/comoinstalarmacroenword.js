@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
     // Cargar el encabezado
     const headerPlaceholder = document.getElementById('header-placeholder');
-    fetch('../../componentes/header.html')
+    fetch('/componentes/header.html')
         .then(response => response.text())
         .then(data => {
             headerPlaceholder.innerHTML = data;
@@ -10,15 +10,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Cargar el pie de página
     const footerPlaceholder = document.getElementById('footer-placeholder');
-    fetch('../../componentes/footer.html')
+    fetch('/componentes/footer.html')
         .then(response => response.text())
         .then(data => {
             footerPlaceholder.innerHTML = data;
-            const footerScript = document.createElement('script');
-            footerScript.src = '../../componentes/footer.js';
-            footerScript.type = 'text/javascript';
-            footerScript.defer = true;  
-            document.body.appendChild(footerScript);
         })
         .catch(error => console.error('Error al cargar el pie de página:', error));
 
