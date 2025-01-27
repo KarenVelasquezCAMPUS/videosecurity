@@ -1,4 +1,4 @@
-# Video Security Tutorial System
+# Video Security
 
 ## Descripción General
 Este sistema de tutoriales en video está diseñado para proporcionar contenido educativo protegido mediante diversas medidas de seguridad. Utiliza HLS (HTTP Live Streaming) para la reproducción de videos y está construido con una arquitectura modular que facilita la adición de nuevo contenido.
