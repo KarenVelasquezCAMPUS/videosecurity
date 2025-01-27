@@ -1,22 +1,4 @@
 document.addEventListener('DOMContentLoaded', function () {
-    // Cargar el encabezado
-    const headerPlaceholder = document.getElementById('header-placeholder');
-    fetch('/componentes/header.html')
-        .then(response => response.text())
-        .then(data => {
-            headerPlaceholder.innerHTML = data;
-        })
-        .catch(error => console.error('Error al cargar el encabezado:', error));
-
-    // Cargar el pie de página
-    const footerPlaceholder = document.getElementById('footer-placeholder');
-    fetch('/componentes/footer.html')
-        .then(response => response.text())
-        .then(data => {
-            footerPlaceholder.innerHTML = data;
-        })
-        .catch(error => console.error('Error al cargar el pie de página:', error));
-
     // Inicializar video en formato m3u8, evitando descarga del mismo
     const videoElement = document.getElementById('video');
     const videoSrc = 'media/comoinstalarmacroenword.m3u8';
