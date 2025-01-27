@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Inicializar video en formato m3u8, evitando descarga del mismo
     const videoElement = document.getElementById('video');
-    const videoSrc = 'media/comoregistrarfacturasconitemsexentos.m3u8';
+    const videoSrc = '../../ayuda/comoregistrarfacturasconitemsexentos/media/comoregistrarfacturasconitemsexentos.m3u8';
     if (videoElement.canPlayType('application/vnd.apple.mpegmar')) {
         videoElement.src = videoSrc;
     } else if (Hls.isSupported()) {

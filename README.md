@@ -14,7 +14,7 @@ proyecto/
 │   ├── header.css            # Estilos del encabezado
 │   └── header.html           # Estructura del encabezado
 │
-├── declaraciones/            # Módulos de contenido
+├── ayuda/                    # Módulos de contenido
 │   ├── comoinstalarmacroenword/
 │   │   ├── media/           # Archivos multimedia del módulo
 │   │   │   ├── .m3u8       # Archivo de streaming
