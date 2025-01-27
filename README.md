@@ -1,174 +1,161 @@
-# Video Security Project
+# Video Security Tutorial System
 
 ## Descripción General
-Este proyecto consiste en una implementación de una interfaz para reproducir videos en formato HLS (HTTP Live Streaming) mientras se aplican varias medidas manuales para dificultar que los usuarios descarguen el contenido. El objetivo principal es proteger los videos alojados en la carpeta `media` para evitar su descarga directa o uso no autorizado.
-
-El sistema utiliza un archivo HTML para estructurar la página, un archivo JavaScript para manejar la reproducción del video y agregar restricciones, y un archivo de estilos CSS para la presentación visual (no incluido en este código).
-
----
+Este sistema de tutoriales en video está diseñado para proporcionar contenido educativo protegido mediante diversas medidas de seguridad. Utiliza HLS (HTTP Live Streaming) para la reproducción de videos y está construido con una arquitectura modular que facilita la adición de nuevo contenido.
 
 ## Estructura del Proyecto
 
-### Archivos Principales
-
-1. **HTML**
-   - Define la estructura de la página.
-   - Incluye referencias al archivo CSS (`styles.css`) y JavaScript (`main.js`).
-   - Proporciona un contenedor para el reproductor de video.
-
-2. **JavaScript** (`main.js`)
-   - Configura la reproducción del video usando la librería HLS.js.
-   - Aplica restricciones manuales para prevenir la descarga del video.
-
-3. **Carpeta `media`**
-   - Contiene el contenido multimedia necesario:
-     - Archivos TS (segmentos de video).
-     - Archivo M3U8 (lista de reproducción HLS).
-     - Archivo MP4 (opcional, utilizado como referencia o respaldo).
-
----
-
-## Explicación del Código
-
-### HTML
-El archivo HTML contiene la estructura base de la aplicación:
-- **Etiqueta `video`**:
-  - Utiliza clases y atributos para configurarse como un reproductor HLS con controles básicos (play, pause, etc.).
-  - Está envuelto en un contenedor para mayor flexibilidad de diseño.
-
-```html
-<video id="video" class="video-js vjs-default-skin" controls autoplay loop></video>
+```
+proyecto/
+├── componentes/               # Componentes reutilizables
+│   ├── footer.css            # Estilos del pie de página
+│   ├── footer.js             # Funcionalidad del pie de página
+│   ├── footer.html           # Estructura del pie de página
+│   ├── header.css            # Estilos del encabezado
+│   └── header.html           # Estructura del encabezado
+│
+├── declaraciones/            # Módulos de contenido
+│   ├── comoinstalarmacroenword/
+│   │   ├── media/           # Archivos multimedia del módulo
+│   │   │   ├── .m3u8       # Archivo de streaming
+│   │   │   ├── .mp4        # Video original
+│   │   │   └── .ts         # Segmentos de video
+│   │   ├── .css            # Estilos específicos del módulo
+│   │   ├── .js             # Funcionalidad del módulo
+│   │   └── .html           # Estructura del módulo
+│   │
+│   └── comoregistrarfacturasconitemsexentos/
+│       └── [misma estructura que el módulo anterior]
+│
+├── iconos/                   # Recursos gráficos
+│   ├── animaciones/         # Elementos animados
+│   │   └── robotcanva.webp
+│   └── logo/                # Logotipos del sistema
+│       ├── Avance.png
+│       ├── LogoSigno.png
+│       └── Signo.png
+└── README.md                # Documentación del proyecto
 ```
 
-- **Referencias a Recursos Externos**:
-  - HLS.js: Una librería de JavaScript que permite la reproducción de videos HLS en navegadores que no lo soportan nativamente.
-  - Archivo JavaScript `main.js`: Contiene la lógica para gestionar la reproducción y restricciones.
+## Componentes del Sistema
 
-### JavaScript
-El archivo JavaScript implementa las siguientes funcionalidades clave:
+### 1. Componentes Reutilizables (`/componentes`)
+Los componentes header y footer se utilizan en todas las páginas para mantener una experiencia de usuario consistente.
 
-1. **Detección de Soporte para HLS**:
-   - Si el navegador soporta nativamente HLS, el video se reproduce directamente.
-   - Si no es compatible, se utiliza HLS.js para gestionar la reproducción.
+#### Header
+- **header.html**: Define la estructura de navegación superior
+- **header.css**: Establece estilos para el encabezado
 
-```javascript
-if (videoElement.canPlayType('application/vnd.apple.mpegurl')) {
-    videoElement.src = videoSrc;
-} else if (Hls.isSupported()) {
-    const hls = new Hls();
-    hls.loadSource(videoSrc);
-    hls.attachMedia(videoElement);
-} else {
-    console.error('HLS no está soportado en este navegador.');
-}
-```
+#### Footer
+- **footer.html**: Contiene la estructura del pie de página
+- **footer.js**: Maneja la funcionalidad del pie de página
+- **footer.css**: Define los estilos del footer
 
-2. **Prevención de Descarga del Video**:
-   - **Deshabilitar el Menú Contextual**:
-     - Evita que los usuarios accedan al menú contextual (clic derecho) sobre el reproductor.
+### 2. Módulos de Contenido (`/declaraciones`)
+Cada módulo de tutorial sigue una estructura estandarizada:
 
+#### Estructura de Módulo
+- **Carpeta media/**: Contiene los archivos de video
+  - **.m3u8**: Archivo de lista de reproducción HLS
+  - **.mp4**: Archivo de video original
+  - **.ts**: Segmentos de video para streaming
+- **[nombre].html**: Página principal del tutorial
+- **[nombre].css**: Estilos específicos del tutorial
+- **[nombre].js**: Lógica y seguridad del tutorial
+
+### 3. Recursos Gráficos (`/iconos`)
+Organización de elementos visuales del sistema:
+- **animaciones/**: Elementos gráficos animados
+- **logo/**: Logotipos e identidad visual
+
+## Características de Seguridad
+
+### Protección de Video
+El sistema implementa múltiples capas de seguridad:
+
+1. **Streaming HLS**
+   - Segmentación de video para prevenir descarga directa
+   - Reproducción progresiva del contenido
+
+2. **Medidas Anti-manipulación**
    ```javascript
-   videoElement.addEventListener('contextmenu', (e) => e.preventDefault());
-   ```
+   // Bloqueo de teclas de desarrollo
+   document.addEventListener('keydown', (e) => {
+       const blockedKeys = ['PrintScreen', 'F12'];
+       // ... código de prevención
+   });
 
-   - **Restricción de Controles**:
-     - Intenta agregar restricciones como `nodownload` para evitar la opción de descarga desde los controles del video.
-
-   ```javascript
-   videoElement.addEventListener('loadedmetadata', () => {
-       const videoControls = videoElement.controlsList;
-       if (videoControls) {
-           videoControls.add('nodownload');
-       }
+   // Deshabilitación de menú contextual
+   document.addEventListener('contextmenu', (e) => {
+       e.preventDefault();
    });
    ```
 
-3. **Configuración Adicional**:
-   - Se establece el atributo `preload` en `none` para evitar la precarga innecesaria del video y dificultar la captura de datos.
+3. **Control de Reproducción**
+   - Deshabilitación de controles de descarga
+   - Prevención de copiar/pegar
+   - Bloqueo de capturas de pantalla
 
-   ```javascript
-   videoElement.setAttribute('preload', 'none');
-   ```
+## Diseño y Estilos
 
----
+### Características de Diseño
+1. **Diseño Responsivo**
+   - Layout flexible de dos columnas
+   - Adaptación a diferentes tamaños de pantalla
 
-## Metodología para Proteger el Video
+2. **Interfaz Moderna**
+   - Efectos de hover suaves
+   - Sombras y elevaciones
+   - Scroll personalizado
 
-El código implementa las siguientes estrategias para proteger el video:
+3. **Optimización Visual**
+   - Fuentes optimizadas para lectura
+   - Espaciado consistente
+   - Jerarquía visual clara
 
-1. **Uso de HLS (HTTP Live Streaming)**
-   - Divide el video en pequeños segmentos (`.ts`) que se reproducen de manera secuencial.
-   - Los navegadores no pueden descargar el video completo directamente.
+## Requisitos Técnicos
 
-2. **Deshabilitación de Funciones del Navegador**
-   - El menú contextual sobre el reproductor está deshabilitado.
-   - Se intenta restringir la descarga mediante controles adicionales (`nodownload`).
+### Navegador
+- Soporte para JavaScript moderno
+- Compatibilidad con HLS
+- Navegadores modernos (Chrome, Firefox, Safari, Edge)
 
-3. **Ajustes de Reproducción**
-   - La configuración de `preload` en `none` minimiza las oportunidades de descargar el video completo.
+### Servidor
+- Configuración para archivos .m3u8 y .ts
+- Soporte para streaming HLS
 
----
+## Mantenimiento y Actualización
 
-## Requisitos
+### Agregar Nuevo Contenido
+1. Crear nueva carpeta en `/declaraciones`
+2. Seguir estructura de carpetas establecida
+3. Convertir video a formato HLS
+4. Implementar archivos HTML, CSS y JS
 
-- Navegador moderno con soporte para JavaScript.
-- Librería [HLS.js](https://github.com/video-dev/hls.js) incluida en el proyecto.
-- Servidor web para servir el archivo M3U8 y los segmentos TS.
-
----
-
-## Instalación de HLS.js
-Para instalar HLS.js en tu proyecto, utiliza el siguiente comando en la terminal:
-
-```bash
-npm install hls.js
-```
-
-Luego, puedes incluirlo en tu archivo JavaScript principal:
-
-```javascript
-import Hls from 'hls.js';
-```
-
-Si prefieres usar un CDN, puedes incluirlo directamente en el archivo HTML (asi se realizó en este proyecto):
-
-```html
-<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
-```
-
----
-
-## Conversión de MP4 a M3U8
-Para convertir un archivo MP4 a formato HLS (M3U8 y segmentos TS), sigue estos pasos en un sistema Linux con FFmpeg instalado:
-
-1. Asegúrate de tener FFmpeg instalado:
-
-```bash
-sudo apt update
-sudo apt install ffmpeg
-```
-
-2. Ejecuta el siguiente comando donde tengas ubicado tu video mp4 en el proyecto para realizar la conversión:
-
+### Conversión de Videos mp4 a m3u8
+Comando FFmpeg para convertir videos:
 ```bash
 ffmpeg -i video.mp4 -hls_time 10 -hls_list_size 0 -f hls video.m3u8
 ```
 
-- `video.mp4`: El archivo MP4 de entrada.
-- `-hls_time 10`: Divide el video en segmentos de 10 segundos.
-- `video.m3u8`: El archivo de lista de reproducción HLS generado.
+## Mejoras Planificadas
 
-Los segmentos `.ts` generados y el archivo `.m3u8` estarán listos en el mismo directorio donde se ejecutó el comando.
+1. **Seguridad**
+   - Sistema de autenticación
+   - Cifrado de segmentos HLS
+   - Integración con CDN
 
----
+2. **Funcionalidad**
+   - Sistema de búsqueda
+   - Reproductor personalizado
+   - Tracking de progreso
 
-## Mejoras Futuras
+3. **Rendimiento**
+   - Optimización de carga
+   - Caché inteligente
+   - Compresión mejorada
 
-- Implementar token de autenticación para la URL del video HLS.
-- Cifrar los segmentos TS para evitar su reproducción fuera de la aplicación.
-- Utilizar un servicio de CDN para proteger las rutas de los archivos.
-
----
-
-## Consideraciones
-Aunque estas medidas dificultan la descarga del video, no garantizan una protección absoluta contra usuarios avanzados que utilicen herramientas especializadas. La seguridad del contenido puede mejorarse combinando estas estrategias con tecnologías pagas como DRM (Digital Rights Management) .
+## Notas Importantes
+- El sistema implementa seguridad básica pero no es infalible
+- Se recomienda mantener actualizadas las dependencias
+- Revisar periódicamente las medidas de seguridad
